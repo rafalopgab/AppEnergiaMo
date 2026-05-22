@@ -265,65 +265,60 @@
 </nav>
 
 <script>
-// RANKING VENTAS por tienda (de imagen)
-const rankingData = [
-  {dist:'Promovil 3.0 SL', pdv:'YOIGO BURGOS C GENERAL SANTOCILDES', ventas:17},
-  {dist:'Promovil 3.0 SL', pdv:'NEKSUS BURGOS C VITORIA', ventas:8},
-  {dist:'Ana Cecilia Colman Mazzitello', pdv:'NEKSUS OVIEDO AV COLON', ventas:7},
-  {dist:'Promovil 3.0 SL', pdv:'NEKSUS BURGOS CC EL MIRADOR DE BURGOS', ventas:7},
-  {dist:'Somosgrupotu 2024 SL', pdv:'NEKSUS LEON C DE VELAZQUEZ', ventas:4},
-  {dist:'Ave Fenix Task Force SLU', pdv:'NEKSUS AVILES CC EL ATRIO BB', ventas:3},
-  {dist:'Somosgrupotu 2024 SL', pdv:'NEKSUS LEON AV NOCEDO', ventas:2},
-  {dist:'Somosgrupotu 2024 SL', pdv:'NEKSUS LEON C AZORIN', ventas:2},
-  {dist:'Yoipal SL', pdv:'NEKSUS PALENCIA AV CARDENAL CISNEROS', ventas:2},
-  {dist:'Promovil 3.0 SL', pdv:'NEKSUS POLA DE SIERO C ALCALDE PARRONDO', ventas:2},
-  {dist:'Somosgrupotu 2024 SL', pdv:'NEKSUS SAN ANDRES DEL RABANEDO CC ESPACIO', ventas:1},
-  {dist:'Somosgrupotu 2024 SL', pdv:'NEKSUS CASTRILLON C RAMIRO I', ventas:1},
-  {dist:'Somosgrupotu 2024 SL', pdv:'NEKSUS ZAMORA AV TRES CRUCES', ventas:1},
-  {dist:'Ave Fenix Task Force SLU', pdv:'NEKSUS OVIEDO C BERMUDEZ DE CASTRO', ventas:1},
-  {dist:'Hello Telefonia SL', pdv:'NEKSUS LANGREO C CELESTINO CABEZA', ventas:1},
-  {dist:'San Maximo Telecom SLU', pdv:'NEKSUS ZAMORA C SANTA CLARA', ventas:1},
-];
+// REEMPLAZA ESTA URL POR LA QUE COPIASTE DE GOOGLE APPS SCRIPT
+const API_URL = "https://script.google.com/macros/s/AKfycbzYfMsnXh14s_MI7cTJIYNdA-RrGPovpwInmbdXtg9s3U9GG_oIT3kamU-gUc3KfNTyCA/exec";
 
-// RANKING COMPARATIVAS (de imagen)
-const compData = [
-  {dist:'Promovil 3.0 SL', pdv:'YOIGO BURGOS C GENERAL SANTOCILDES', comp:17},
-  {dist:'Promovil 3.0 SL', pdv:'NEKSUS BURGOS C VITORIA', comp:8},
-  {dist:'Ana Cecilia Colman Mazzitello', pdv:'NEKSUS OVIEDO AV COLON', comp:7},
-  {dist:'Promovil 3.0 SL', pdv:'NEKSUS BURGOS CC EL MIRADOR DE BURGOS', comp:7},
-  {dist:'Somosgrupotu 2024 SL', pdv:'NEKSUS LEON C DE VELAZQUEZ', comp:4},
-  {dist:'Ave Fenix Task Force SLU', pdv:'NEKSUS AVILES CC EL ATRIO BB', comp:3},
-  {dist:'Somosgrupotu 2024 SL', pdv:'NEKSUS LEON AV NOCEDO', comp:2},
-  {dist:'Somosgrupotu 2024 SL', pdv:'NEKSUS LEON C AZORIN', comp:2},
-  {dist:'Yoipal SL', pdv:'NEKSUS PALENCIA AV CARDENAL CISNEROS', comp:2},
-  {dist:'Promovil 3.0 SL', pdv:'NEKSUS POLA DE SIERO C ALCALDE PARRONDO', comp:2},
-  {dist:'Somosgrupotu 2024 SL', pdv:'NEKSUS SAN ANDRES DEL RABANEDO CC ESPACIO', comp:1},
-  {dist:'Somosgrupotu 2024 SL', pdv:'NEKSUS CASTRILLON C RAMIRO I', comp:1},
-  {dist:'Somosgrupotu 2024 SL', pdv:'NEKSUS ZAMORA AV TRES CRUCES', comp:1},
-  {dist:'Ave Fenix Task Force SLU', pdv:'NEKSUS OVIEDO C BERMUDEZ DE CASTRO', comp:1},
-  {dist:'Hello Telefonia SL', pdv:'NEKSUS LANGREO C CELESTINO CABEZA', comp:1},
-  {dist:'San Maximo Telecom SLU', pdv:'NEKSUS ZAMORA C SANTA CLARA', comp:1},
-];
-
-// TIENDAS APAGADAS (SFIDs del excel sin ventas o no aparecen en ranking)
-const apagadas = [
-  {sfid:'ML134001', pdv:'NEKSUS PALENCIA C MAYOR', dist:'Comunicaciones Globales E-Mobile SL', msg:'Palencia tiene potencial. Usa el argumento de 40€ de bienvenida para romper el hielo con cada cliente que entre.'},
-  {sfid:'ML133002', pdv:'NEKSUS OVIEDO C URÍA', dist:'Ave Fenix Task Force SLU', msg:'Oviedo es zona activa. Tu distribuidor ya vende en otras tiendas. ¿Qué está frenando esta tienda? Revisa el argumentario de Luz.'},
-  {sfid:'ML133930', pdv:'NEKSUS LANGREO C CELESTINO CABEZA', dist:'Hello Telefonia SL', msg:'Solo 1 venta registrada este mes. El precio de Gas RL1 a 0,083€/kWh puede ser clave en esta zona. Propón siempre el combo Luz+Gas.'},
-  {sfid:'ML149003', pdv:'NEKSUS ZAMORA C SANTA CLARA', dist:'San Maximo Telecom SLU', msg:'Zamora tiene margen de crecimiento. Cada cliente de Telco es un cliente potencial de Energía. No dejes pasar ninguna visita.'},
-  {sfid:'ML109400', pdv:'NEKSUS ARANDA DE DUERO', dist:'Yaimovil Burgos SLU', msg:'Burgos lidera el ranking. Esta tienda puede sumarse. Usa el éxito de Burgos Santocildes como referencia motivadora.'},
-  {sfid:'MB133011', pdv:'NEKSUS OVIEDO CC ESPACIO', dist:'Ave Fenix Task Force SLU', msg:'Centro comercial con alto tráfico. Es el momento de activar. Cada hora sin ofrecer Energía es una oportunidad perdida.'},
-  {sfid:'ML133600', pdv:'NEKSUS MIERES C MANUEL LLANEZA', dist:'Hello Telefonia SL', msg:'Mieres es zona minera con alto consumo energético. El ahorro es un argumento muy potente aquí. Empieza por el Gas RL2.'},
-  {sfid:'ML209007', pdv:'NEKSUS BURGOS GAMONAL', dist:'Promovil 3.0 SL', msg:'Tu distribuidor es el nº1 del ranking. Pide apoyo interno, comparte las técnicas de Burgos Santocildes y replica el modelo.'},
-];
+let rankingData = [];
+let compData = [];
+let apagadas = [];
 
 const medals = ['🥇','🥈','🥉'];
 
+async function cargarDatos() {
+  try {
+    const response = await fetch(API_URL);
+    const datos = await response.json();
+    
+    rankingData = datos.rankingData;
+    compData = datos.compData;
+    apagadas = datos.apagadas;
+    
+    // Calcular contadores automáticos antes de pintar
+    actualizarContadores();
+
+    // Pintar las listas
+    buildRanking();
+    buildComp();
+    buildApagadas();
+  } catch (error) {
+    console.error("Error cargando los datos de la semana:", error);
+  }
+}
+
+function actualizarContadores() {
+  // Suma total de ventas
+  const totalVentas = rankingData.reduce((sum, item) => sum + Number(item.ventas || 0), 0);
+  // Suma total de comparativas
+  const totalComp = compData.reduce((sum, item) => sum + Number(item.comp || 0), 0);
+  // Tiendas activas (las que tienen al menos 1 venta)
+  const tiendasActivas = rankingData.filter(item => Number(item.ventas) > 0).length;
+  // Tiendas apagadas
+  const totalApagadas = apagadas.length;
+  
+  // Encontrar el distribuidor Top 1 de comparativas
+  const topDistComp = compData[0] ? compData[0].dist : "Sin datos";
+
+  // Inyectar dinámicamente en los bloques de estadísticas del HTML
+  // (Nota: Para que esto funcione al 100%, añade selectores o IDs a tus cajas de texto en el HTML)
+  console.log("Datos procesados correctamente. Ventas:", totalVentas);
+}
+
 function buildRanking(){
-  const maxV = rankingData[0].ventas;
+  if(rankingData.length === 0) return;
+  const maxV = Number(rankingData[0].ventas || 1);
   document.getElementById('ranking-list').innerHTML = rankingData.map((d,i)=>{
     const cls = i===0?'top1':i===1?'top2':i===2?'top3':'';
-    const pct = Math.round((d.ventas/maxV)*100);
+    const pct = Math.round((Number(d.ventas)/maxV)*100);
     const pos = i<3 ? medals[i] : `<span style="color:var(--muted);font-size:13px">#${i+1}</span>`;
     return `<div class="rank-item ${cls}">
       <div class="rank-pos">${pos}</div>
@@ -341,10 +336,11 @@ function buildRanking(){
 }
 
 function buildComp(){
-  const maxC = compData[0].comp;
+  if(compData.length === 0) return;
+  const maxC = Number(compData[0].comp || 1);
   document.getElementById('comp-list').innerHTML = compData.map((d,i)=>{
     const cls = i===0?'top1':i===1?'top2':i===2?'top3':'';
-    const pct = Math.round((d.comp/maxC)*100);
+    const pct = Math.round((Number(d.comp)/maxC)*100);
     const pos = i<3 ? medals[i] : `<span style="color:var(--muted);font-size:13px">#${i+1}</span>`;
     return `<div class="rank-item ${cls}">
       <div class="rank-pos">${pos}</div>
@@ -391,9 +387,8 @@ function switchTab(btn, tabId){
   btn.classList.add('active');
 }
 
-buildRanking();
-buildComp();
-buildApagadas();
+// Inicializar la carga automática
+cargarDatos();
 </script>
 </body>
 </html>
