@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Energía — App Comercial</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  :root{--gold:#f5a623;--gold2:#ffc94d;--dark:#0a0a0a;--card:#161616;--card2:#1e1e1e;--text:#fff;--muted:#888;--red:#dc2626;--green:#16a34a}
+  body{background:var(--dark);color:var(--text);font-family:'Segoe UI',sans-serif;min-height:100vh;padding-bottom:80px}
+  nav{position:fixed;bottom:0;left:0;right:0;background:#111;border-top:1px solid #222;display:flex;z-index:100;overflow-x:auto}
+  nav button{flex:1;min-width:60px;padding:10px 4px 7px;background:none;border:none;color:var(--muted);font-size:10px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;transition:.2s;white-space:nowrap}
+  nav button.active{color:var(--gold)}
+  nav button svg{width:20px;height:20px}
+  .header{background:linear-gradient(135deg,#111 0%,#1a1400 100%);padding:18px 16px 14px;border-bottom:2px solid var(--gold)}
+  .header h1{font-size:20px;font-weight:900;letter-spacing:1px}
+  .header h1 span{color:var(--gold)}
+  .header p{font-size:11px;color:var(--muted);margin-top:2px}
+  .section{display:none;padding:14px}
+  .section.active{display:block}
+  .card{background:var(--card);border-radius:12px;padding:14px;margin-bottom:10px;border:1px solid #222}
+  .card-gold{border-color:var(--gold);background:linear-gradient(135deg,#1a1400,#111)}
+  .card-red{border-color:var(--red);background:linear-gradient(135deg,#1a0000,#111)}
+  .tag{display:inline-block;background:var(--gold);color:#000;font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;margin-bottom:8px}
+  .tag-red{background:var(--red);color:#fff}
+  .tag-green{background:var(--green);color:#fff}
+  .tag-blue{background:#2563eb;color:#fff}
+  h2{font-size:17px;font-weight:800;margin-bottom:12px}
+  h3{font-size:14px;font-weight:700;margin-bottom:5px}
+  .price{font-size:26px;font-weight:900;color:var(--gold)}
+  .price-sm{font-size:17px;font-weight:800;color:var(--gold)}
+  .muted{color:var(--muted);font-size:13px}
+  .row{display:flex;gap:10px}
+  .col{flex:1}
+  table{width:100%;border-collapse:collapse;font-size:12px}
+  th{background:var(--gold);color:#000;padding:7px 8px;text-align:left;font-weight:700}
+  td{padding:7px 8px;border-bottom:1px solid #222;font-size:12px}
+  tr:last-child td{border-bottom:none}
+  .rank-item{display:flex;align-items:center;gap:10px;padding:11px;background:var(--card);border-radius:10px;margin-bottom:7px;border:1px solid #222}
+  .rank-item.top1{border-color:#ffd700;background:linear-gradient(90deg,#1a1500,#111)}
+  .rank-item.top2{border-color:#c0c0c0;background:linear-gradient(90deg,#151515,#111)}
+  .rank-item.top3{border-color:#cd7f32;background:linear-gradient(90deg,#150e05,#111)}
+  .rank-pos{font-size:20px;font-weight:900;width:32px;text-align:center}
+  .rank-info{flex:1;min-width:0}
+  .rank-sfid{font-size:13px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .rank-sub{font-size:11px;color:var(--muted)}
+  .rank-ventas{font-size:19px;font-weight:900;color:var(--gold)}
+  .rank-label{font-size:10px;color:var(--muted);text-align:right}
+  .bar-wrap{background:#222;border-radius:4px;height:5px;margin-top:5px;overflow:hidden}
+  .bar-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold2));border-radius:4px}
+  .bar-red{background:linear-gradient(90deg,var(--red),#f87171)}
+  .tip{background:var(--card2);border-left:3px solid var(--gold);padding:11px;border-radius:0 8px 8px 0;margin-bottom:9px}
+  .tip p{font-size:12px;line-height:1.5}
+  .tip strong{color:var(--gold)}
+  .stats-row{display:flex;gap:8px;margin-bottom:14px}
+  .stat-box{flex:1;background:var(--card);border-radius:10px;padding:10px;text-align:center;border:1px solid #222}
+  .stat-num{font-size:22px;font-weight:900;color:var(--gold)}
+  .stat-lbl{font-size:10px;color:var(--muted);margin-top:2px}
+  .promo-big{text-align:center;padding:20px 14px;background:linear-gradient(135deg,#1a1400,#0a0a0a);border-radius:12px;border:2px solid var(--gold);margin-bottom:14px}
+  .tabs{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap}
+  .tab{padding:6px 12px;border-radius:20px;border:1px solid #333;background:none;color:var(--muted);font-size:12px;cursor:pointer;transition:.2s}
+  .tab.active{background:var(--gold);color:#000;font-weight:700;border-color:var(--gold)}
+  .apagada-item{background:var(--card);border:1px solid var(--red);border-radius:10px;padding:12px;margin-bottom:8px}
+  .apagada-item .nombre{font-size:13px;font-weight:700;color:#f87171}
+  .apagada-item .dist{font-size:11px;color:var(--muted);margin-bottom:6px}
+  .msg-box{background:#1a0000;border-radius:6px;padding:8px 10px;font-size:12px;color:#fca5a5;line-height:1.5;margin-top:6px}
+  .dist-header{background:#1a0000;border:1px solid #7f1d1d;border-radius:8px;padding:8px 12px;margin-bottom:6px;font-size:12px;font-weight:700;color:#f87171;display:flex;justify-content:space-between;align-items:center}
+  ::-webkit-scrollbar{width:4px}
+  ::-webkit-scrollbar-track{background:#111}
+  ::-webkit-scrollbar-thumb{background:var(--gold);border-radius:2px}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>NOVEDADES <span>ENERGÍA</span></h1>
+  <p>Estrategia Comercial · Equipo Tienda</p>
+</div>
+
+<!-- HOME -->
+<div id="sec-home" class="section active">
+  <div class="stats-row">
+    <div class="stat-box"><div class="stat-num">37</div><div class="stat-lbl">Ventas totales</div></div>
+    <div class="stat-box"><div class="stat-num">19</div><div class="stat-lbl">Tiendas activas</div></div>
+    <div class="stat-box"><div class="stat-num" style="color:var(--red)">8</div><div class="stat-lbl">Tiendas apagadas</div></div>
+  </div>
+  <div class="promo-big">
+    <div style="font-size:12px;color:var(--muted);margin-bottom:4px;letter-spacing:2px">PROMO ESTRELLA</div>
+    <div class="price" style="font-size:48px">40€</div>
+    <div style="font-size:13px;letter-spacing:3px;color:var(--gold);margin-top:2px">DESCUENTO POR LUZ</div>
+    <div class="muted" style="margin-top:6px;font-size:12px">10€ en 2ª/3ª/4ª/5ª factura · +6€ Dto Telco</div>
+  </div>
+  <div class="card card-gold">
+    <div class="tag">💡 TOP TIENDA</div>
+    <div style="font-size:16px;font-weight:800">YOIGO BURGOS C GENERAL SANTOCILDES</div>
+    <div class="muted">Promovil 3.0 SL · 17 ventas</div>
+    <div style="display:flex;align-items:center;gap:8px;margin-top:8px">
+      <span style="font-size:22px">🥇</span>
+      <div class="bar-wrap" style="flex:1"><div class="bar-fill" style="width:100%"></div></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="tag tag-green">✅ CLAVE DEL MES</div>
+    <p style="font-size:13px;line-height:1.6;margin-top:4px;font-style:italic;color:#ddd">"Haz que el cliente <strong style="color:var(--gold)">VEA el ahorro</strong> visualizando su factura actual frente a la propuesta empaquetada."</p>
+  </div>
+</div>
+
+<!-- TARIFAS -->
+<div id="sec-tarifas" class="section">
+  <h2>Tarifas & Promos</h2>
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab(this,'tab-luz')">💡 Luz</button>
+    <button class="tab" onclick="switchTab(this,'tab-gas')">🔥 Gas</button>
+    <button class="tab" onclick="switchTab(this,'tab-promo')">🎁 Promo</button>
+  </div>
+  <div id="tab-luz">
+    <div class="card card-gold">
+      <div class="tag">LUZ CAPTACIÓN</div>
+      <div class="row" style="margin-top:8px;align-items:flex-end">
+        <div class="col"><div class="muted">Término Energía</div><div class="price">0,139 €/kWh</div></div>
+        <div><div style="background:#1a1400;border:1px solid var(--gold);border-radius:6px;padding:5px 10px;font-size:11px;color:var(--gold);font-weight:700">+6€ Dto Telco</div></div>
+      </div>
+    </div>
+    <div class="card">
+      <table>
+        <tr><th>Concepto</th><th>Tarifa</th><th>Ventaja</th></tr>
+        <tr><td>Término Energía</td><td style="color:var(--gold);font-weight:700">0,139 €/kWh</td><td>Precio Estable</td></tr>
+        <tr><td>Potencia P1 (Punta)</td><td style="color:var(--gold);font-weight:700">0,1334 €/kWdía</td><td>Optimizado</td></tr>
+        <tr><td>Potencia P2 (Valle)</td><td style="color:var(--gold);font-weight:700">0,0595 €/kWdía</td><td>Ahorro Nocturno</td></tr>
+        <tr><td>Dto. Bienvenida</td><td style="color:var(--gold);font-weight:700">40€ Total</td><td>Incentivo Directo</td></tr>
+      </table>
+    </div>
+  </div>
+  <div id="tab-gas" style="display:none">
+    <div class="card card-gold">
+      <div class="tag">GAS CAPTACIÓN</div>
+      <div class="row" style="margin-top:8px;align-items:flex-end">
+        <div class="col"><div class="muted">Desde</div><div class="price">0,076 €/kWh</div></div>
+        <div><div style="background:#1a1400;border:1px solid var(--gold);border-radius:6px;padding:5px 10px;font-size:11px;color:var(--gold);font-weight:700">+3€ Dto Telco</div></div>
+      </div>
+    </div>
+    <div class="card">
+      <table>
+        <tr><th>Categoría</th><th>T. Variable</th><th>T. Fijo</th><th>Telco</th></tr>
+        <tr><td>RL1 (&lt;5.000 kWh)</td><td style="color:var(--gold);font-weight:700">0,083 €/kWh</td><td>6,43 €/mes</td><td style="color:var(--gold)">3€</td></tr>
+        <tr><td>RL2 (5k–15k kWh)</td><td style="color:var(--gold);font-weight:700">0,076 €/kWh</td><td>12,39 €/mes</td><td style="color:var(--gold)">3€</td></tr>
+      </table>
+    </div>
+  </div>
+  <div id="tab-promo" style="display:none">
+    <div class="promo-big">
+      <div class="muted" style="font-size:11px;letter-spacing:2px">PROMO BIENVENIDA</div>
+      <div class="price" style="font-size:52px">40€</div>
+      <div class="muted" style="margin-top:5px">de Descuento por contratar Luz</div>
+    </div>
+    <div class="card">
+      <table>
+        <tr><th>Factura</th><th>Descuento</th></tr>
+        <tr><td>2ª Factura</td><td style="color:var(--gold);font-weight:700">10€</td></tr>
+        <tr><td>3ª Factura</td><td style="color:var(--gold);font-weight:700">10€</td></tr>
+        <tr><td>4ª Factura</td><td style="color:var(--gold);font-weight:700">10€</td></tr>
+        <tr><td>5ª Factura</td><td style="color:var(--gold);font-weight:700">10€</td></tr>
+        <tr><td><strong>TOTAL</strong></td><td style="color:var(--gold);font-weight:900;font-size:15px">40€</td></tr>
+      </table>
+    </div>
+    <div class="card card-gold">
+      <div class="tag">🤝 COMBINADO TELCO</div>
+      <div class="row" style="margin-top:10px;gap:16px">
+        <div class="col" style="text-align:center"><div class="muted" style="font-size:11px">Luz</div><div class="price-sm">+6€/mes</div></div>
+        <div style="width:1px;background:#333"></div>
+        <div class="col" style="text-align:center"><div class="muted" style="font-size:11px">Gas</div><div class="price-sm">+3€/mes</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- VENTAS -->
+<div id="sec-ventas" class="section">
+  <h2>Técnicas de Venta</h2>
+  <div class="card card-gold" style="text-align:center;padding:18px">
+    <div style="font-size:30px">🎯</div>
+    <div style="font-size:13px;font-weight:700;margin-top:5px">ARGUMENTO PRINCIPAL</div>
+    <div style="font-size:12px;color:var(--muted);margin-top:4px;line-height:1.5">Muéstrale al cliente cuánto paga ahora vs. lo que pagaría con nuestra tarifa</div>
+  </div>
+  <div class="tip"><div style="font-size:10px;color:var(--gold);font-weight:700;margin-bottom:4px">1 · FOCO EN DESCUENTO</div><p>Abre siempre con los <strong>40€ de descuento</strong>. Es el "rompehielos" más potente.</p></div>
+  <div class="tip"><div style="font-size:10px;color:var(--gold);font-weight:700;margin-bottom:4px">2 · TRANSPARENCIA</div><p>Muestra el desglose: Término Energía + Potencia P1/P2. <strong>La transparencia genera confianza.</strong></p></div>
+  <div class="tip"><div style="font-size:10px;color:var(--gold);font-weight:700;margin-bottom:4px">3 · COMBINACIÓN TELCO</div><p>Si el cliente ya tiene Telco, añade <strong>+6€/mes adicionales</strong> de ahorro.</p></div>
+  <div class="tip"><div style="font-size:10px;color:var(--gold);font-weight:700;margin-bottom:4px">4 · MERCADO GAS RL2</div><p>Para alto consumo, el precio <strong>RL2 a 0,076€/kWh</strong> es muy competitivo.</p></div>
+  <div class="tip"><div style="font-size:10px;color:var(--gold);font-weight:700;margin-bottom:4px">5 · CIERRE VISUAL</div><p>Pregunta cuánto paga ahora y <strong>calcula el ahorro en pantalla</strong> delante del cliente.</p></div>
+  <div class="card" style="margin-top:14px">
+    <div class="tag tag-green">📋 GUIÓN RÁPIDO</div>
+    <div style="margin-top:8px;font-size:12px;line-height:1.8">
+      <div style="color:var(--gold);font-weight:700">Apertura:</div>
+      <div class="muted">"¿Sabías que puedes ahorrar 40€ en tu factura de luz solo por cambiarte con nosotros?"</div>
+      <div style="color:var(--gold);font-weight:700;margin-top:6px">Desarrollo:</div>
+      <div class="muted">"Nuestro precio es 0,139€/kWh fijo, y encima tienes 40€ de descuento en las siguientes facturas."</div>
+      <div style="color:var(--gold);font-weight:700;margin-top:6px">Cierre:</div>
+      <div class="muted">"¿Me dices cuánto pagas ahora? Te calculo el ahorro exacto en un momento."</div>
+    </div>
+  </div>
+</div>
+
+<!-- RANKING VENTAS -->
+<div id="sec-ranking" class="section">
+  <h2>🏆 Ranking por Tienda</h2>
+  <div class="stats-row">
+    <div class="stat-box"><div class="stat-num">37</div><div class="stat-lbl">Total ventas</div></div>
+    <div class="stat-box"><div class="stat-num">7</div><div class="stat-lbl">Distribuidores</div></div>
+    <div class="stat-box"><div class="stat-num">Norte</div><div class="stat-lbl">Zona</div></div>
+  </div>
+  <div id="ranking-list"></div>
+</div>
+
+<!-- RANKING COMPARATIVAS -->
+<div id="sec-comp" class="section">
+  <h2>📊 Ranking Comparativas</h2>
+  <div class="stats-row">
+    <div class="stat-box"><div class="stat-num">62</div><div class="stat-lbl">Total comp.</div></div>
+    <div class="stat-box"><div class="stat-num">7</div><div class="stat-lbl">Distribuidores</div></div>
+    <div class="stat-box"><div class="stat-num">#1</div><div class="stat-lbl">Promovil 3.0</div></div>
+  </div>
+  <div id="comp-list"></div>
+</div>
+
+<!-- TIENDAS APAGADAS -->
+<div id="sec-apagadas" class="section">
+  <h2>🚨 Tiendas Apagadas</h2>
+  <div class="stats-row">
+    <div class="stat-box" style="border-color:var(--red)"><div class="stat-num" style="color:var(--red)">8</div><div class="stat-lbl">Sin ventas</div></div>
+    <div class="stat-box"><div class="stat-num">0</div><div class="stat-lbl">Ventas registradas</div></div>
+    <div class="stat-box"><div class="stat-num" style="color:var(--red)">⚠️</div><div class="stat-lbl">Acción urgente</div></div>
+  </div>
+  <div class="card card-red" style="margin-bottom:14px">
+    <div class="tag tag-red">⚡ MENSAJE AL EQUIPO</div>
+    <p style="font-size:12px;line-height:1.6;margin-top:6px;color:#fca5a5">Estas tiendas llevan el mes sin registrar ni una venta de energía. El <strong style="color:#fff">descuento de 40€</strong> es nuestro mejor argumento. No hay excusa para no abrir la conversación con cada cliente.</p>
+  </div>
+  <div id="apagadas-list"></div>
+</div>
+
+<nav>
+  <button class="active" onclick="showSection('home',this)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+    Inicio
+  </button>
+  <button onclick="showSection('tarifas',this)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+    Tarifas
+  </button>
+  <button onclick="showSection('ventas',this)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+    Ventas
+  </button>
+  <button onclick="showSection('ranking',this)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="18 20 18 10"/><polyline points="12 20 12 4"/><polyline points="6 20 6 14"/></svg>
+    Ranking
+  </button>
+  <button onclick="showSection('comp',this)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+    Comp.
+  </button>
+  <button onclick="showSection('apagadas',this)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>
+    Apagadas
+  </button>
+</nav>
+
+<script>
+// RANKING VENTAS por tienda (de imagen)
+const rankingData = [
+  {dist:'Promovil 3.0 SL', pdv:'YOIGO BURGOS C GENERAL SANTOCILDES', ventas:17},
+  {dist:'Promovil 3.0 SL', pdv:'NEKSUS BURGOS C VITORIA', ventas:8},
+  {dist:'Ana Cecilia Colman Mazzitello', pdv:'NEKSUS OVIEDO AV COLON', ventas:7},
+  {dist:'Promovil 3.0 SL', pdv:'NEKSUS BURGOS CC EL MIRADOR DE BURGOS', ventas:7},
+  {dist:'Somosgrupotu 2024 SL', pdv:'NEKSUS LEON C DE VELAZQUEZ', ventas:4},
+  {dist:'Ave Fenix Task Force SLU', pdv:'NEKSUS AVILES CC EL ATRIO BB', ventas:3},
+  {dist:'Somosgrupotu 2024 SL', pdv:'NEKSUS LEON AV NOCEDO', ventas:2},
+  {dist:'Somosgrupotu 2024 SL', pdv:'NEKSUS LEON C AZORIN', ventas:2},
+  {dist:'Yoipal SL', pdv:'NEKSUS PALENCIA AV CARDENAL CISNEROS', ventas:2},
+  {dist:'Promovil 3.0 SL', pdv:'NEKSUS POLA DE SIERO C ALCALDE PARRONDO', ventas:2},
+  {dist:'Somosgrupotu 2024 SL', pdv:'NEKSUS SAN ANDRES DEL RABANEDO CC ESPACIO', ventas:1},
+  {dist:'Somosgrupotu 2024 SL', pdv:'NEKSUS CASTRILLON C RAMIRO I', ventas:1},
+  {dist:'Somosgrupotu 2024 SL', pdv:'NEKSUS ZAMORA AV TRES CRUCES', ventas:1},
+  {dist:'Ave Fenix Task Force SLU', pdv:'NEKSUS OVIEDO C BERMUDEZ DE CASTRO', ventas:1},
+  {dist:'Hello Telefonia SL', pdv:'NEKSUS LANGREO C CELESTINO CABEZA', ventas:1},
+  {dist:'San Maximo Telecom SLU', pdv:'NEKSUS ZAMORA C SANTA CLARA', ventas:1},
+];
+
+// RANKING COMPARATIVAS (de imagen)
+const compData = [
+  {dist:'Promovil 3.0 SL', pdv:'YOIGO BURGOS C GENERAL SANTOCILDES', comp:17},
+  {dist:'Promovil 3.0 SL', pdv:'NEKSUS BURGOS C VITORIA', comp:8},
+  {dist:'Ana Cecilia Colman Mazzitello', pdv:'NEKSUS OVIEDO AV COLON', comp:7},
+  {dist:'Promovil 3.0 SL', pdv:'NEKSUS BURGOS CC EL MIRADOR DE BURGOS', comp:7},
+  {dist:'Somosgrupotu 2024 SL', pdv:'NEKSUS LEON C DE VELAZQUEZ', comp:4},
+  {dist:'Ave Fenix Task Force SLU', pdv:'NEKSUS AVILES CC EL ATRIO BB', comp:3},
+  {dist:'Somosgrupotu 2024 SL', pdv:'NEKSUS LEON AV NOCEDO', comp:2},
+  {dist:'Somosgrupotu 2024 SL', pdv:'NEKSUS LEON C AZORIN', comp:2},
+  {dist:'Yoipal SL', pdv:'NEKSUS PALENCIA AV CARDENAL CISNEROS', comp:2},
+  {dist:'Promovil 3.0 SL', pdv:'NEKSUS POLA DE SIERO C ALCALDE PARRONDO', comp:2},
+  {dist:'Somosgrupotu 2024 SL', pdv:'NEKSUS SAN ANDRES DEL RABANEDO CC ESPACIO', comp:1},
+  {dist:'Somosgrupotu 2024 SL', pdv:'NEKSUS CASTRILLON C RAMIRO I', comp:1},
+  {dist:'Somosgrupotu 2024 SL', pdv:'NEKSUS ZAMORA AV TRES CRUCES', comp:1},
+  {dist:'Ave Fenix Task Force SLU', pdv:'NEKSUS OVIEDO C BERMUDEZ DE CASTRO', comp:1},
+  {dist:'Hello Telefonia SL', pdv:'NEKSUS LANGREO C CELESTINO CABEZA', comp:1},
+  {dist:'San Maximo Telecom SLU', pdv:'NEKSUS ZAMORA C SANTA CLARA', comp:1},
+];
+
+// TIENDAS APAGADAS (SFIDs del excel sin ventas o no aparecen en ranking)
+const apagadas = [
+  {sfid:'ML134001', pdv:'NEKSUS PALENCIA C MAYOR', dist:'Comunicaciones Globales E-Mobile SL', msg:'Palencia tiene potencial. Usa el argumento de 40€ de bienvenida para romper el hielo con cada cliente que entre.'},
+  {sfid:'ML133002', pdv:'NEKSUS OVIEDO C URÍA', dist:'Ave Fenix Task Force SLU', msg:'Oviedo es zona activa. Tu distribuidor ya vende en otras tiendas. ¿Qué está frenando esta tienda? Revisa el argumentario de Luz.'},
+  {sfid:'ML133930', pdv:'NEKSUS LANGREO C CELESTINO CABEZA', dist:'Hello Telefonia SL', msg:'Solo 1 venta registrada este mes. El precio de Gas RL1 a 0,083€/kWh puede ser clave en esta zona. Propón siempre el combo Luz+Gas.'},
+  {sfid:'ML149003', pdv:'NEKSUS ZAMORA C SANTA CLARA', dist:'San Maximo Telecom SLU', msg:'Zamora tiene margen de crecimiento. Cada cliente de Telco es un cliente potencial de Energía. No dejes pasar ninguna visita.'},
+  {sfid:'ML109400', pdv:'NEKSUS ARANDA DE DUERO', dist:'Yaimovil Burgos SLU', msg:'Burgos lidera el ranking. Esta tienda puede sumarse. Usa el éxito de Burgos Santocildes como referencia motivadora.'},
+  {sfid:'MB133011', pdv:'NEKSUS OVIEDO CC ESPACIO', dist:'Ave Fenix Task Force SLU', msg:'Centro comercial con alto tráfico. Es el momento de activar. Cada hora sin ofrecer Energía es una oportunidad perdida.'},
+  {sfid:'ML133600', pdv:'NEKSUS MIERES C MANUEL LLANEZA', dist:'Hello Telefonia SL', msg:'Mieres es zona minera con alto consumo energético. El ahorro es un argumento muy potente aquí. Empieza por el Gas RL2.'},
+  {sfid:'ML209007', pdv:'NEKSUS BURGOS GAMONAL', dist:'Promovil 3.0 SL', msg:'Tu distribuidor es el nº1 del ranking. Pide apoyo interno, comparte las técnicas de Burgos Santocildes y replica el modelo.'},
+];
+
+const medals = ['🥇','🥈','🥉'];
+
+function buildRanking(){
+  const maxV = rankingData[0].ventas;
+  document.getElementById('ranking-list').innerHTML = rankingData.map((d,i)=>{
+    const cls = i===0?'top1':i===1?'top2':i===2?'top3':'';
+    const pct = Math.round((d.ventas/maxV)*100);
+    const pos = i<3 ? medals[i] : `<span style="color:var(--muted);font-size:13px">#${i+1}</span>`;
+    return `<div class="rank-item ${cls}">
+      <div class="rank-pos">${pos}</div>
+      <div class="rank-info">
+        <div class="rank-sfid">${d.pdv}</div>
+        <div class="rank-sub">${d.dist}</div>
+        <div class="bar-wrap"><div class="bar-fill" style="width:${pct}%"></div></div>
+      </div>
+      <div style="text-align:right">
+        <div class="rank-ventas">${d.ventas}</div>
+        <div class="rank-label">ventas</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function buildComp(){
+  const maxC = compData[0].comp;
+  document.getElementById('comp-list').innerHTML = compData.map((d,i)=>{
+    const cls = i===0?'top1':i===1?'top2':i===2?'top3':'';
+    const pct = Math.round((d.comp/maxC)*100);
+    const pos = i<3 ? medals[i] : `<span style="color:var(--muted);font-size:13px">#${i+1}</span>`;
+    return `<div class="rank-item ${cls}">
+      <div class="rank-pos">${pos}</div>
+      <div class="rank-info">
+        <div class="rank-sfid">${d.pdv}</div>
+        <div class="rank-sub">${d.dist}</div>
+        <div class="bar-wrap"><div class="bar-fill" style="width:${pct}%"></div></div>
+      </div>
+      <div style="text-align:right">
+        <div class="rank-ventas">${d.comp}</div>
+        <div class="rank-label">comp.</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function buildApagadas(){
+  document.getElementById('apagadas-list').innerHTML = apagadas.map((d,i)=>`
+    <div class="apagada-item">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start">
+        <div>
+          <div class="nombre">🔴 ${d.pdv}</div>
+          <div class="dist">${d.sfid} · ${d.dist}</div>
+        </div>
+        <div style="background:#7f1d1d;color:#fca5a5;font-size:10px;font-weight:700;padding:3px 8px;border-radius:20px">0 ventas</div>
+      </div>
+      <div class="msg-box">💬 ${d.msg}</div>
+    </div>
+  `).join('');
+}
+
+function showSection(id, btn){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));
+  document.getElementById('sec-'+id).classList.add('active');
+  btn.classList.add('active');
+}
+
+function switchTab(btn, tabId){
+  ['tab-luz','tab-gas','tab-promo'].forEach(t=>{
+    document.getElementById(t).style.display = t===tabId?'block':'none';
+  });
+  btn.closest('.tabs').querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+buildRanking();
+buildComp();
+buildApagadas();
+</script>
+</body>
+</html>
