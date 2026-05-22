@@ -296,21 +296,18 @@ async function cargarDatos() {
 }
 
 function actualizarContadores() {
-  // Suma total de ventas
   const totalVentas = rankingData.reduce((sum, item) => sum + Number(item.ventas || 0), 0);
-  // Suma total de comparativas
-  const totalComp = compData.reduce((sum, item) => sum + Number(item.comp || 0), 0);
-  // Tiendas activas (las que tienen al menos 1 venta)
-  const tiendasActivas = rankingData.filter(item => Number(item.ventas) > 0).length;
-  // Tiendas apagadas
+  const tiendasActivas = rankingData.length;
   const totalApagadas = apagadas.length;
-  
-  // Encontrar el distribuidor Top 1 de comparativas
-  const topDistComp = compData[0] ? compData[0].dist : "Sin datos";
 
-  // Inyectar dinámicamente en los bloques de estadísticas del HTML
-  // (Nota: Para que esto funcione al 100%, añade selectores o IDs a tus cajas de texto en el HTML)
-  console.log("Datos procesados correctamente. Ventas:", totalVentas);
+  // Comprobamos si el ID existe antes de cambiarlo para que no rompa la app
+  const elVentas = document.getElementById('total-ventas');
+  const elActivas = document.getElementById('tiendas-activas');
+  const elApagadas = document.getElementById('tiendas-apagadas');
+
+  if (elVentas) elVentas.innerText = totalVentas;
+  if (elActivas) elActivas.innerText = tiendasActivas;
+  if (elApagadas) elApagadas.innerText = totalApagadas;
 }
 
 function buildRanking(){
