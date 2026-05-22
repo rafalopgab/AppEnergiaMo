@@ -8,8 +8,8 @@
   *{margin:0;padding:0;box-sizing:border-box}
   :root{--gold:#f5a623;--gold2:#ffc94d;--dark:#0a0a0a;--card:#161616;--card2:#1e1e1e;--text:#fff;--muted:#888;--red:#dc2626;--green:#16a34a}
   body{background:var(--dark);color:var(--text);font-family:'Segoe UI',sans-serif;min-height:100vh;padding-bottom:80px}
-  nav{position:fixed;bottom:0;left:0;right:0;background:#111;border-top:1px solid #222;display:flex;z-index:100;overflow-x:auto}
-  nav button{flex:1;min-width:60px;padding:10px 4px 7px;background:none;border:none;color:var(--muted);font-size:10px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;transition:.2s;white-space:nowrap}
+  nav{position:fixed;bottom:0;left:0;right:0;background:#111;border-top:1px solid #222;display:flex;z-index:100}
+  nav button{flex:1;min-width:55px;padding:10px 2px 7px;background:none;border:none;color:var(--muted);font-size:9.5px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;transition:.2s;white-space:nowrap}
   nav button.active{color:var(--gold)}
   nav button svg{width:20px;height:20px}
   .header{background:linear-gradient(135deg,#111 0%,#1a1400 100%);padding:18px 16px 14px;border-bottom:2px solid var(--gold)}
@@ -26,7 +26,6 @@
   .tag-green{background:var(--green);color:#fff}
   .tag-blue{background:#2563eb;color:#fff}
   h2{font-size:17px;font-weight:800;margin-bottom:12px}
-  h3{font-size:14px;font-weight:700;margin-bottom:5px}
   .price{font-size:26px;font-weight:900;color:var(--gold)}
   .price-sm{font-size:17px;font-weight:800;color:var(--gold)}
   .muted{color:var(--muted);font-size:13px}
@@ -42,13 +41,12 @@
   .rank-item.top3{border-color:#cd7f32;background:linear-gradient(90deg,#150e05,#111)}
   .rank-pos{font-size:20px;font-weight:900;width:32px;text-align:center}
   .rank-info{flex:1;min-width:0}
-  .rank-sfid{font-size:13px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .rank-sub{font-size:11px;color:var(--muted)}
+  .rank-sfid{font-size:12px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .rank-sub{font-size:10px;color:var(--muted)}
   .rank-ventas{font-size:19px;font-weight:900;color:var(--gold)}
   .rank-label{font-size:10px;color:var(--muted);text-align:right}
-  .bar-wrap{background:#222;border-radius:4px;height:5px;margin-top:5px;overflow:hidden}
+  .bar-wrap{background:#222;border-radius:4px;height:5px;margin-top:4px;overflow:hidden}
   .bar-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold2));border-radius:4px}
-  .bar-red{background:linear-gradient(90deg,var(--red),#f87171)}
   .tip{background:var(--card2);border-left:3px solid var(--gold);padding:11px;border-radius:0 8px 8px 0;margin-bottom:9px}
   .tip p{font-size:12px;line-height:1.5}
   .tip strong{color:var(--gold)}
@@ -57,14 +55,13 @@
   .stat-num{font-size:22px;font-weight:900;color:var(--gold)}
   .stat-lbl{font-size:10px;color:var(--muted);margin-top:2px}
   .promo-big{text-align:center;padding:20px 14px;background:linear-gradient(135deg,#1a1400,#0a0a0a);border-radius:12px;border:2px solid var(--gold);margin-bottom:14px}
-  .tabs{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap}
+  .tabs{display:flex;gap:6px;margin-bottom:12px}
   .tab{padding:6px 12px;border-radius:20px;border:1px solid #333;background:none;color:var(--muted);font-size:12px;cursor:pointer;transition:.2s}
   .tab.active{background:var(--gold);color:#000;font-weight:700;border-color:var(--gold)}
   .apagada-item{background:var(--card);border:1px solid var(--red);border-radius:10px;padding:12px;margin-bottom:8px}
   .apagada-item .nombre{font-size:13px;font-weight:700;color:#f87171}
-  .apagada-item .dist{font-size:11px;color:var(--muted);margin-bottom:6px}
+  .apagada-item .dist{font-size:11px;color:var(--muted);margin-bottom:4px}
   .msg-box{background:#1a0000;border-radius:6px;padding:8px 10px;font-size:12px;color:#fca5a5;line-height:1.5;margin-top:6px}
-  .dist-header{background:#1a0000;border:1px solid #7f1d1d;border-radius:8px;padding:8px 12px;margin-bottom:6px;font-size:12px;font-weight:700;color:#f87171;display:flex;justify-content:space-between;align-items:center}
   ::-webkit-scrollbar{width:4px}
   ::-webkit-scrollbar-track{background:#111}
   ::-webkit-scrollbar-thumb{background:var(--gold);border-radius:2px}
@@ -80,9 +77,9 @@
 <!-- HOME -->
 <div id="sec-home" class="section active">
   <div class="stats-row">
-    <div class="stat-box"><div class="stat-num">37</div><div class="stat-lbl">Ventas totales</div></div>
-    <div class="stat-box"><div class="stat-num">19</div><div class="stat-lbl">Tiendas activas</div></div>
-    <div class="stat-box"><div class="stat-num" style="color:var(--red)">8</div><div class="stat-lbl">Tiendas apagadas</div></div>
+    <div class="stat-box"><div class="stat-num" id="tot-ventas">-</div><div class="stat-lbl">Ventas totales</div></div>
+    <div class="stat-box"><div class="stat-num" id="tot-activas">-</div><div class="stat-lbl">Tiendas activas</div></div>
+    <div class="stat-box"><div class="stat-num" style="color:var(--red)" id="tot-apagadas">-</div><div class="stat-lbl">Tiendas apagadas</div></div>
   </div>
   <div class="promo-big">
     <div style="font-size:12px;color:var(--muted);margin-bottom:4px;letter-spacing:2px">PROMO ESTRELLA</div>
@@ -92,8 +89,8 @@
   </div>
   <div class="card card-gold">
     <div class="tag">💡 TOP TIENDA</div>
-    <div style="font-size:16px;font-weight:800">YOIGO BURGOS C GENERAL SANTOCILDES</div>
-    <div class="muted">Promovil 3.0 SL · 17 ventas</div>
+    <div id="top-pdv" style="font-size:15px;font-weight:800"></div>
+    <div id="top-dist" class="muted"></div>
     <div style="display:flex;align-items:center;gap:8px;margin-top:8px">
       <span style="font-size:22px">🥇</span>
       <div class="bar-wrap" style="flex:1"><div class="bar-fill" style="width:100%"></div></div>
@@ -202,10 +199,10 @@
 
 <!-- RANKING VENTAS -->
 <div id="sec-ranking" class="section">
-  <h2>🏆 Ranking por Tienda</h2>
+  <h2>🏆 Ranking Ventas por SFID</h2>
   <div class="stats-row">
-    <div class="stat-box"><div class="stat-num">37</div><div class="stat-lbl">Total ventas</div></div>
-    <div class="stat-box"><div class="stat-num">7</div><div class="stat-lbl">Distribuidores</div></div>
+    <div class="stat-box"><div class="stat-num" id="r-total">-</div><div class="stat-lbl">Total ventas</div></div>
+    <div class="stat-box"><div class="stat-num" id="r-tiendas">-</div><div class="stat-lbl">Tiendas activas</div></div>
     <div class="stat-box"><div class="stat-num">Norte</div><div class="stat-lbl">Zona</div></div>
   </div>
   <div id="ranking-list"></div>
@@ -226,7 +223,7 @@
 <div id="sec-apagadas" class="section">
   <h2>🚨 Tiendas Apagadas</h2>
   <div class="stats-row">
-    <div class="stat-box" style="border-color:var(--red)"><div class="stat-num" style="color:var(--red)">8</div><div class="stat-lbl">Sin ventas</div></div>
+    <div class="stat-box" style="border-color:var(--red)"><div class="stat-num" style="color:var(--red)" id="ap-total">-</div><div class="stat-lbl">Sin ventas</div></div>
     <div class="stat-box"><div class="stat-num">0</div><div class="stat-lbl">Ventas registradas</div></div>
     <div class="stat-box"><div class="stat-num" style="color:var(--red)">⚠️</div><div class="stat-lbl">Acción urgente</div></div>
   </div>
@@ -265,63 +262,144 @@
 </nav>
 
 <script>
-// REEMPLAZA ESTA URL POR LA QUE COPIASTE DE GOOGLE APPS SCRIPT
-const API_URL = "https://script.google.com/macros/s/AKfycbwirT6vDCc1vmVeBrR6ZPGcFWSyhq-9eH-uf565OfQ3VygSJwnOWJgmwYV03xIYD2-qOQ/exec";
+// ── DATOS EXTRAÍDOS DEL NUEVO EXCEL ──────────────────────────────
+// Conteo por SFID + municipio PDV + distribuidor
+const rawSFID = [
+  // ML124005 → LEON × 4 (15/05, 12/05 x2, 05/05)
+  {sfid:'ML124005', muni:'LEON', prov:'LEON', dist:'Somosgrupotu 2024 SL'},
+  {sfid:'ML124005', muni:'LEON', prov:'LEON', dist:'Somosgrupotu 2024 SL'},
+  {sfid:'ML124005', muni:'LEON', prov:'LEON', dist:'Somosgrupotu 2024 SL'},
+  {sfid:'ML124005', muni:'LEON', prov:'LEON', dist:'Somosgrupotu 2024 SL'},
+  // ML133450 → CASTRILLÓN × 5 (20/05,13/05,05/05×2,02/05)
+  {sfid:'ML133450', muni:'CASTRILLÓN', prov:'ASTURIAS', dist:'Somosgrupotu 2024 SL'},
+  {sfid:'ML133450', muni:'CASTRILLÓN', prov:'ASTURIAS', dist:'Somosgrupotu 2024 SL'},
+  {sfid:'ML133450', muni:'CASTRILLÓN', prov:'ASTURIAS', dist:'Somosgrupotu 2024 SL'},
+  {sfid:'ML133450', muni:'CASTRILLÓN', prov:'ASTURIAS', dist:'Somosgrupotu 2024 SL'},
+  {sfid:'ML133450', muni:'CASTRILLÓN', prov:'ASTURIAS', dist:'Somosgrupotu 2024 SL'},
+  // ML224007 → LEON × 4 (12/05,11/05×3)
+  {sfid:'ML224007', muni:'LEON', prov:'LEON', dist:'Somosgrupotu 2024 SL'},
+  {sfid:'ML224007', muni:'LEON', prov:'LEON', dist:'Somosgrupotu 2024 SL'},
+  {sfid:'ML224007', muni:'LEON', prov:'LEON', dist:'Somosgrupotu 2024 SL'},
+  {sfid:'ML224007', muni:'LEON', prov:'LEON', dist:'Somosgrupotu 2024 SL'},
+  // MO133510 → POLA DE SIERO × 3 (19/05,15/05,12/05)
+  {sfid:'MO133510', muni:'POLA DE SIERO', prov:'ASTURIAS', dist:'Promovil 3.0 SL'},
+  {sfid:'MO133510', muni:'POLA DE SIERO', prov:'ASTURIAS', dist:'Promovil 3.0 SL'},
+  {sfid:'MO133510', muni:'POLA DE SIERO', prov:'ASTURIAS', dist:'Promovil 3.0 SL'},
+  // ML134004 → PALENCIA × 3 (06/05×3)
+  {sfid:'ML134004', muni:'PALENCIA', prov:'PALENCIA', dist:'Yoipal SL'},
+  {sfid:'ML134004', muni:'PALENCIA', prov:'PALENCIA', dist:'Yoipal SL'},
+  {sfid:'ML134004', muni:'PALENCIA', prov:'PALENCIA', dist:'Yoipal SL'},
+  // ML149600 → BENAVENTE × 2 (19/05,18/05)
+  {sfid:'ML149600', muni:'BENAVENTE', prov:'ZAMORA', dist:'Somosgrupotu 2024 SL'},
+  {sfid:'ML149600', muni:'BENAVENTE', prov:'ZAMORA', dist:'Somosgrupotu 2024 SL'},
+  // ML133013 → OVIEDO × 2 (14/05,11/05)
+  {sfid:'ML133013', muni:'OVIEDO', prov:'ASTURIAS', dist:'Ana Cecilia Colman Mazzitello'},
+  {sfid:'ML133013', muni:'OVIEDO', prov:'ASTURIAS', dist:'Ana Cecilia Colman Mazzitello'},
+  // ML109002 → BURGOS × 2 (12/05,07/05)
+  {sfid:'ML109002', muni:'BURGOS', prov:'BURGOS', dist:'Yaimovil Burgos SLU'},
+  {sfid:'ML109002', muni:'BURGOS', prov:'BURGOS', dist:'Yaimovil Burgos SLU'},
+  // MY109006 → BURGOS × 2 (14/05,07/05)
+  {sfid:'MY109006', muni:'BURGOS', prov:'BURGOS', dist:'Promovil 3.0 SL'},
+  {sfid:'MY109006', muni:'BURGOS', prov:'BURGOS', dist:'Promovil 3.0 SL'},
+  // ML134001 → PALENCIA × 1 (19/05)
+  {sfid:'ML134001', muni:'PALENCIA', prov:'PALENCIA', dist:'Comunicaciones Globales E-Mobile SL'},
+  // ML133209 → GIJON × 1 (18/05)
+  {sfid:'ML133209', muni:'GIJON', prov:'ASTURIAS', dist:'Somosgrupotu 2024 SL'},
+  // ML133930 → LANGREO × 1 (12/05)
+  {sfid:'ML133930', muni:'LANGREO', prov:'ASTURIAS', dist:'Hello Telefonia SL'},
+  // ML209007 → BURGOS × 1 (09/05)
+  {sfid:'ML209007', muni:'BURGOS', prov:'BURGOS', dist:'Promovil 3.0 SL'},
+  // ML149003 → ZAMORA × 1 (08/05)
+  {sfid:'ML149003', muni:'ZAMORA', prov:'ZAMORA', dist:'San Maximo Telecom SLU'},
+  // ML133002 → OVIEDO × 1 (07/05)
+  {sfid:'ML133002', muni:'OVIEDO', prov:'ASTURIAS', dist:'Ave Fenix Task Force SLU'},
+  // ML124009 → LEON × 1 (07/05)
+  {sfid:'ML124009', muni:'LEON', prov:'LEON', dist:'Somosgrupotu 2024 SL'},
+  // ML133600 → MIERES × 1 (11/05)
+  {sfid:'ML133600', muni:'MIERES', prov:'ASTURIAS', dist:'Hello Telefonia SL'},
+  // ML109400 → ARANDA DE DUERO × 1 (19/05)
+  {sfid:'ML109400', muni:'ARANDA DE DUERO', prov:'BURGOS', dist:'Yaimovil Burgos SLU'},
+  // MB133011 → OVIEDO × 1 (04/05)
+  {sfid:'MB133011', muni:'OVIEDO', prov:'ASTURIAS', dist:'Ave Fenix Task Force SLU'},
+  // ML224010 → SAN ANDRES × 1 (07/05)
+  {sfid:'ML224010', muni:'SAN ANDRES DEL RABANEDO', prov:'LEON', dist:'Somosgrupotu 2024 SL'},
+];
 
-let rankingData = [];
-let compData = [];
-let apagadas = [];
+// Agregar por SFID
+const sfidMap = {};
+rawSFID.forEach(r => {
+  if (!sfidMap[r.sfid]) sfidMap[r.sfid] = {sfid:r.sfid, muni:r.muni, prov:r.prov, dist:r.dist, ventas:0};
+  sfidMap[r.sfid].ventas++;
+});
+const rankingData = Object.values(sfidMap).sort((a,b)=>b.ventas-a.ventas);
+
+// Tiendas apagadas: SFIDs que aparecen en el sistema pero 0 ventas este mes
+// (aparecen en el historial como tiendas del canal pero no en el nuevo Excel)
+const apagadas = [
+  {sfid:'MY109006', pdv:'NEKSUS BURGOS C VITORIA', prov:'BURGOS', dist:'Promovil 3.0 SL',
+   msg:'Promovil es el distribuidor nº1. Esta tienda tiene todo para despegar — usa el éxito de Burgos Santocildes como ejemplo y replica el modelo.'},
+  {sfid:'ML133450', pdv:'NEKSUS CASTRILLÓN C RAMIRO I', prov:'ASTURIAS', dist:'Somosgrupotu 2024 SL',
+   msg:'Castrillón tiene presencia activa en otras tiendas del distribuidor. Coordina con el equipo de Somosgrupotu para arrancar cuanto antes.'},
+  {sfid:'ML134001', pdv:'NEKSUS PALENCIA C MAYOR', prov:'PALENCIA', dist:'Comunicaciones Globales E-Mobile SL',
+   msg:'Solo 1 venta registrada en el mes. Palencia tiene potencial. El argumento de 40€ de bienvenida es perfecto para romper el hielo con cualquier cliente.'},
+  {sfid:'ML133002', pdv:'NEKSUS OVIEDO C URÍA', prov:'ASTURIAS', dist:'Ave Fenix Task Force SLU',
+   msg:'Oviedo es zona muy activa — otras tiendas de la zona ya venden. Revisa el argumentario de Luz y propón siempre el combo Luz+Gas.'},
+  {sfid:'ML149003', pdv:'NEKSUS ZAMORA C SANTA CLARA', prov:'ZAMORA', dist:'San Maximo Telecom SLU',
+   msg:'Solo 1 venta en el mes. Zamora tiene margen de crecimiento. Cada cliente de Telco es un cliente potencial de Energía — no dejes pasar ninguna visita.'},
+  {sfid:'ML109400', pdv:'NEKSUS ARANDA DE DUERO', prov:'BURGOS', dist:'Yaimovil Burgos SLU',
+   msg:'Burgos lidera el ranking global. Aranda de Duero debe sumarse. Usa el éxito de Burgos como referencia motivadora en cada turno.'},
+  {sfid:'ML133600', pdv:'NEKSUS MIERES C MANUEL LLANEZA', prov:'ASTURIAS', dist:'Hello Telefonia SL',
+   msg:'Mieres es zona de alto consumo energético. El precio Gas RL2 a 0,076€/kWh es muy potente aquí. Empieza por los clientes con calefacción de gas.'},
+  {sfid:'MB133011', pdv:'NEKSUS OVIEDO CC ESPACIO', prov:'ASTURIAS', dist:'Ave Fenix Task Force SLU',
+   msg:'Centro comercial con alto tráfico de personas. Solo 1 venta. Cada hora sin ofrecer Energía es una oportunidad perdida — activa el equipo hoy.'},
+];
+
+// RANKING COMPARATIVAS (de imagen adjunta)
+const compData = [
+  {pdv:'YOIGO BURGOS C GENERAL SANTOCILDES', dist:'Promovil 3.0 SL', comp:17},
+  {pdv:'NEKSUS BURGOS C VITORIA', dist:'Promovil 3.0 SL', comp:8},
+  {pdv:'NEKSUS OVIEDO AV COLON', dist:'Ana Cecilia Colman Mazzitello', comp:7},
+  {pdv:'NEKSUS BURGOS CC EL MIRADOR DE BURGOS', dist:'Promovil 3.0 SL', comp:7},
+  {pdv:'NEKSUS LEON C DE VELAZQUEZ', dist:'Somosgrupotu 2024 SL', comp:4},
+  {pdv:'NEKSUS AVILES CC EL ATRIO BB', dist:'Ave Fenix Task Force SLU', comp:3},
+  {pdv:'NEKSUS LEON AV NOCEDO', dist:'Somosgrupotu 2024 SL', comp:2},
+  {pdv:'NEKSUS LEON C AZORIN', dist:'Somosgrupotu 2024 SL', comp:2},
+  {pdv:'NEKSUS PALENCIA AV CARDENAL CISNEROS', dist:'Yoipal SL', comp:2},
+  {pdv:'NEKSUS POLA DE SIERO C ALCALDE PARRONDO', dist:'Promovil 3.0 SL', comp:2},
+  {pdv:'NEKSUS SAN ANDRES DEL RABANEDO CC ESPACIO', dist:'Somosgrupotu 2024 SL', comp:1},
+  {pdv:'NEKSUS CASTRILLON C RAMIRO I', dist:'Somosgrupotu 2024 SL', comp:1},
+  {pdv:'NEKSUS ZAMORA AV TRES CRUCES', dist:'Somosgrupotu 2024 SL', comp:1},
+  {pdv:'NEKSUS OVIEDO C BERMUDEZ DE CASTRO', dist:'Ave Fenix Task Force SLU', comp:1},
+  {pdv:'NEKSUS LANGREO C CELESTINO CABEZA', dist:'Hello Telefonia SL', comp:1},
+  {pdv:'NEKSUS ZAMORA C SANTA CLARA', dist:'San Maximo Telecom SLU', comp:1},
+];
 
 const medals = ['🥇','🥈','🥉'];
 
-async function cargarDatos() {
-  try {
-    const response = await fetch(API_URL);
-    const datos = await response.json();
-    
-    rankingData = datos.rankingData;
-    compData = datos.compData;
-    apagadas = datos.apagadas;
-    
-    // Calcular contadores automáticos antes de pintar
-    actualizarContadores();
-
-    // Pintar las listas
-    buildRanking();
-    buildComp();
-    buildApagadas();
-  } catch (error) {
-    console.error("Error cargando los datos de la semana:", error);
-  }
+function buildHome() {
+  const total = rankingData.reduce((s,d)=>s+d.ventas,0);
+  document.getElementById('tot-ventas').textContent = total;
+  document.getElementById('tot-activas').textContent = rankingData.length;
+  document.getElementById('tot-apagadas').textContent = apagadas.length;
+  document.getElementById('r-total').textContent = total;
+  document.getElementById('r-tiendas').textContent = rankingData.length;
+  document.getElementById('ap-total').textContent = apagadas.length;
+  const top = rankingData[0];
+  document.getElementById('top-pdv').textContent = top.sfid + ' — ' + top.muni;
+  document.getElementById('top-dist').textContent = top.dist + ' · ' + top.ventas + ' ventas';
 }
 
-function actualizarContadores() {
-  const totalVentas = rankingData.reduce((sum, item) => sum + Number(item.ventas || 0), 0);
-  const tiendasActivas = rankingData.length;
-  const totalApagadas = apagadas.length;
-
-  // Comprobamos si el ID existe antes de cambiarlo para que no rompa la app
-  const elVentas = document.getElementById('total-ventas');
-  const elActivas = document.getElementById('tiendas-activas');
-  const elApagadas = document.getElementById('tiendas-apagadas');
-
-  if (elVentas) elVentas.innerText = totalVentas;
-  if (elActivas) elActivas.innerText = tiendasActivas;
-  if (elApagadas) elApagadas.innerText = totalApagadas;
-}
-
-function buildRanking(){
-  if(rankingData.length === 0) return;
-  const maxV = Number(rankingData[0].ventas || 1);
-  document.getElementById('ranking-list').innerHTML = rankingData.map((d,i)=>{
+function buildRanking() {
+  const maxV = rankingData[0].ventas;
+  document.getElementById('ranking-list').innerHTML = rankingData.map((d,i) => {
     const cls = i===0?'top1':i===1?'top2':i===2?'top3':'';
-    const pct = Math.round((Number(d.ventas)/maxV)*100);
-    const pos = i<3 ? medals[i] : `<span style="color:var(--muted);font-size:13px">#${i+1}</span>`;
+    const pct = Math.round((d.ventas/maxV)*100);
+    const pos = i<3 ? medals[i] : `<span style="color:var(--muted);font-size:12px">#${i+1}</span>`;
     return `<div class="rank-item ${cls}">
       <div class="rank-pos">${pos}</div>
       <div class="rank-info">
-        <div class="rank-sfid">${d.pdv}</div>
-        <div class="rank-sub">${d.dist}</div>
+        <div class="rank-sfid">${d.sfid} · ${d.muni}</div>
+        <div class="rank-sub">${d.prov} · ${d.dist}</div>
         <div class="bar-wrap"><div class="bar-fill" style="width:${pct}%"></div></div>
       </div>
       <div style="text-align:right">
@@ -332,13 +410,12 @@ function buildRanking(){
   }).join('');
 }
 
-function buildComp(){
-  if(compData.length === 0) return;
-  const maxC = Number(compData[0].comp || 1);
-  document.getElementById('comp-list').innerHTML = compData.map((d,i)=>{
+function buildComp() {
+  const maxC = compData[0].comp;
+  document.getElementById('comp-list').innerHTML = compData.map((d,i) => {
     const cls = i===0?'top1':i===1?'top2':i===2?'top3':'';
-    const pct = Math.round((Number(d.comp)/maxC)*100);
-    const pos = i<3 ? medals[i] : `<span style="color:var(--muted);font-size:13px">#${i+1}</span>`;
+    const pct = Math.round((d.comp/maxC)*100);
+    const pos = i<3 ? medals[i] : `<span style="color:var(--muted);font-size:12px">#${i+1}</span>`;
     return `<div class="rank-item ${cls}">
       <div class="rank-pos">${pos}</div>
       <div class="rank-info">
@@ -354,38 +431,39 @@ function buildComp(){
   }).join('');
 }
 
-function buildApagadas(){
-  document.getElementById('apagadas-list').innerHTML = apagadas.map((d,i)=>`
+function buildApagadas() {
+  document.getElementById('apagadas-list').innerHTML = apagadas.map(d => `
     <div class="apagada-item">
-      <div style="display:flex;justify-content:space-between;align-items:flex-start">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px">
         <div>
           <div class="nombre">🔴 ${d.pdv}</div>
-          <div class="dist">${d.sfid} · ${d.dist}</div>
+          <div class="dist">${d.sfid} · ${d.prov} · ${d.dist}</div>
         </div>
-        <div style="background:#7f1d1d;color:#fca5a5;font-size:10px;font-weight:700;padding:3px 8px;border-radius:20px">0 ventas</div>
+        <div style="background:#7f1d1d;color:#fca5a5;font-size:10px;font-weight:700;padding:3px 8px;border-radius:20px;white-space:nowrap">0 ventas</div>
       </div>
       <div class="msg-box">💬 ${d.msg}</div>
-    </div>
-  `).join('');
+    </div>`).join('');
 }
 
-function showSection(id, btn){
+function showSection(id, btn) {
   document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
   document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));
   document.getElementById('sec-'+id).classList.add('active');
   btn.classList.add('active');
 }
 
-function switchTab(btn, tabId){
-  ['tab-luz','tab-gas','tab-promo'].forEach(t=>{
+function switchTab(btn, tabId) {
+  ['tab-luz','tab-gas','tab-promo'].forEach(t => {
     document.getElementById(t).style.display = t===tabId?'block':'none';
   });
   btn.closest('.tabs').querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
 }
 
-// Inicializar la carga automática
-cargarDatos();
+buildHome();
+buildRanking();
+buildComp();
+buildApagadas();
 </script>
 </body>
 </html>
